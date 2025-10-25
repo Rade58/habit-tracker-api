@@ -10,7 +10,10 @@ const isProduction = process.env.APP_STAGE === "production";
 // console.log(isDevelopment, isTesting, isProduction);
 
 if (isDevelopment) {
+  // instead of this
   loadEnv(); // this is loading .env
+  // I wanted to use this
+  loadEnv("dev"); // this is loading .env.dev
 } else if (isTesting) {
   loadEnv("test"); // this is loading .env.test
 } else {
@@ -21,12 +24,12 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
-  APP_STGE: z.enum(["dev", "test", "production"]).default("dev"),
+  APP_STAGE: z.enum(["dev", "test", "production"]).default("dev"),
   PORT: z.coerce.number().positive().default(3000),
   // HOST: z.string().default('localhost'),
   DATABASE_URL: z.string().startsWith("postgresql://"),
   // DATABASE_POOL_MIN: z.coerce.number().min(0).default(2),
-  // DATABASE_POOL_MAX: z.coerce.number().positive().default(10),
+  // DATABASE_POOL_MAX: z.coerce.number().positive().default(isProduction ? 50:10),
   JWT_SECRET: z.string().min(32, "Must be 32 char long at least"),
   JWT_EXPIRES_IN: z.string().default("7d"),
   // REFRESH_TOKEN_SECRET: z.string().min(32).optional(),
@@ -47,6 +50,21 @@ const envSchema = z.object({
   /* LOG_LEVEL: z
     .enum(['error', 'warn', 'info', 'debug', 'trace'])
     .default(isProduction ? 'info' : 'debug'), */
+
+  /*  RATE_LIMIT_WINDOW: z.coerce
+    .number()
+    .positive()
+    // 15min prod  1min development
+    .default(isProduction ? 900000 : 60000),
+ */
+  // ------------ Feature flags ------------
+  /* FEATURE_ANALYTICS: z.coerce.boolean().default(false),
+  FEATURE_SOCIAL: z.coerce.boolean().default(false),
+  FEATURE_PREMIUM: z.coerce.boolean().default(false),
+  */
+
+  // --------------- Version-specific features
+  // API_VERSION: z.string().default("v1"),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -59,12 +77,12 @@ try {
   if (e instanceof z.ZodError) {
     console.log("Invalid env var");
 
-    console.log("_____________________________");
+    console.log("____________________________________________");
     console.error(JSON.stringify(z.treeifyError(e), null, 2));
 
     e.issues.forEach((err) => {
       const path = err.path.join(".");
-      console.log("_____________________________");
+      console.log("__________________________________________");
       console.log(`${path}: ${err.message}`);
     });
 
@@ -74,9 +92,9 @@ try {
   throw e;
 }
 
-export const isProd = () => env.APP_STGE === "production";
-export const isDev = () => env.APP_STGE === "dev";
-export const isTest = () => env.APP_STGE === "test";
+export const isProd = () => env.APP_STAGE === "production";
+export const isDev = () => env.APP_STAGE === "dev";
+export const isTest = () => env.APP_STAGE === "test";
 
 export { env };
 export default env;

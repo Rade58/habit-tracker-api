@@ -11,5 +11,10 @@ app.get("/health", (req, res) => {
   });
 });
 
+// if we have analitics
+/* if (env.FEATURE_ANALYTICS) {
+  app.use('/api/analytics', analyticsRoutes)
+}
+ */
 export { app }; // for tests
 export default app; // for convenience
