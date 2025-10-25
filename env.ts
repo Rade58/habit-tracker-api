@@ -3,14 +3,18 @@ import { z } from "zod";
 
 process.env.APP_STAGE = process.env.APP_STAGE || "dev";
 
-const isDevelopment = process.env.APP_STAGE === "development";
+const isDevelopment = process.env.APP_STAGE === "dev";
+const isTesting = process.env.APP_STAGE === "test";
 const isProduction = process.env.APP_STAGE === "production";
-// const isTesting = process.env.APP_STAGE === "test";
+
+// console.log(isDevelopment, isTesting, isProduction);
 
 if (isDevelopment) {
-  loadEnv();
+  loadEnv(); // this is loading .env
+} else if (isTesting) {
+  loadEnv("test"); // this is loading .env.test
 } else {
-  loadEnv("test");
+  console.log("not development and not testiong, it i probably production");
 }
 
 const envSchema = z.object({
@@ -23,7 +27,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string().startsWith("postgresql://"),
   // DATABASE_POOL_MIN: z.coerce.number().min(0).default(2),
   // DATABASE_POOL_MAX: z.coerce.number().positive().default(10),
-  JWT_SECRET: z.string().min(32, "Must be 32 char long"),
+  JWT_SECRET: z.string().min(32, "Must be 32 char long at least"),
   JWT_EXPIRES_IN: z.string().default("7d"),
   // REFRESH_TOKEN_SECRET: z.string().min(32).optional(),
   // REFRESH_TOKEN_EXPIRES_IN: z.string().default('30d'),
