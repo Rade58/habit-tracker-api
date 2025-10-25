@@ -63,6 +63,7 @@ npm i pg @epic-web/remember drizzle-orm drizzle-zod
 
 ```bash
 npm i -D typescript tsx \
+  @types/node \
   @types/bcrypt \
   @types/cors \
   @types/express \
