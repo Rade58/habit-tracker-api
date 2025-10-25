@@ -1,6 +1,6 @@
 # Habit Tracker API with express
 
-[based on this project](https://github.com/Hendrixer/api-design-node-v5)
+Project made while following [this workshop](https://github.com/Hendrixer/api-design-node-v5)
 
 ## Node version
 
@@ -19,14 +19,13 @@ npm i express ts-node zod
 - middlewares
 
 ```bash
-npm i \
-  # logging middleware
+# morgan - logging middleware
+# helmet - securing with HTTP response headers
+# cors - enabling CORS
+npm install \
   morgan \
-  # securing with HTTP response headers
-  helmet
-  # enabling CORS
+  helmet \
   cors
-
 ```
 
 - authentication
@@ -42,7 +41,7 @@ npm i bcrypt
 
 ---
 
-- environment stuff:
+- environment stuff
 
 ```bash
 npm i custom-env dotenv
@@ -50,7 +49,7 @@ npm i custom-env dotenv
 
 ---
 
-- database
+- database stuff
 
 ```bash
 npm i pg @epic-web/remember drizzle-orm drizzle-zod
@@ -84,7 +83,7 @@ npm i -D cross-env
 npm i -D drizzle-kit
 ```
 
-- testing
+- testing stuff
 
 ```bash
 npm i -D vitest supertest
