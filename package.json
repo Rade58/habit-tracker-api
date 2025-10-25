@@ -1,0 +1,25 @@
+{
+  "name": "habit-tracker-api",
+  "version": "1.0.0",
+  "description": "Habit tracker api with Express",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rade58/habit-tracker-api.git"
+  },
+  "keywords": [
+    "habit-tracker",
+    "express",
+    "drizzle"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rade58/habit-tracker-api/issues"
+  },
+  "homepage": "https://github.com/Rade58/habit-tracker-api#readme"
+}
