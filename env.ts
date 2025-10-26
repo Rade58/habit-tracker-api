@@ -5,7 +5,7 @@ process.env.APP_STAGE = process.env.APP_STAGE || "dev";
 
 const isDevelopment = process.env.APP_STAGE === "dev";
 const isTesting = process.env.APP_STAGE === "test";
-// const isProduction = process.env.APP_STAGE === "production";
+const isProduction = process.env.APP_STAGE === "production";
 
 // console.log(isDevelopment, isTesting, isProduction);
 
@@ -16,9 +16,11 @@ if (isDevelopment) {
   loadEnv("dev"); // this is loading .env.dev
 } else if (isTesting) {
   loadEnv("test"); // this is loading .env.test
-} else {
-  console.log("not development and not testiong, so it is probably production");
+} else if (isProduction) {
+  console.log("production -> no loading of env files");
   // no loading .env files in production
+} else {
+  console.log("probably staging");
 }
 
 const envSchema = z.object({
@@ -85,7 +87,7 @@ try {
       const path = err.path.join(". ");
       console.log({ path });
       console.log(`${path} -> ${err.message}`);
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     });
 
     process.exit(1);
