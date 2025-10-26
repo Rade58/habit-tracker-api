@@ -1,12 +1,36 @@
 import express from "express";
 
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+
 import userRoutes from "./routes/userRoutes.ts";
 import habitRoutes from "./routes/habitRoutes.ts";
 import authRoutes from "./routes/authRoutes.ts";
 
+import { isDev, isTestEnv, env } from "../env.ts";
+
 const app = express();
 
-// health check endpoint
+// ----------------------------------------
+
+app.use(helmet());
+app.use(
+  cors({
+    origin: env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  morgan("dev", {
+    skip: () => isTestEnv(),
+  })
+);
+// ----------------------------------------
+
+// health check endpoint ---------------------------
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "OK",
@@ -14,14 +38,10 @@ app.get("/health", (req, res) => {
     service: "Habit Tracker api",
   });
 });
-
 /* app.get("/dugme", (req, res) => {
   res.status(200).send(`<button>dugme</button>`);
 }); */
-
-app.post("/cake/:name/:id", (req, res) => {
-  res.status(201).send(req.params);
-});
+// -------------------------------------------------
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);

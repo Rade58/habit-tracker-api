@@ -11,7 +11,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/:id", (req, res) => {
-  res.json({ message: "User created" }).status(201);
+  res.status(201).json({ message: "User created" });
 });
 
 router.put("/:id", (req, res) => {
@@ -19,7 +19,7 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  res.json({ message: `Delete user ${req.params.id}` });
+  res.status(204).json({ message: `Delete user ${req.params.id}` });
 });
 
 export default router;

@@ -66,6 +66,7 @@ npm i -D typescript tsx \
   @types/node \
   @types/bcrypt \
   @types/cors \
+  @types/morgan \
   @types/express \
   @types/jest \
   @types/node \

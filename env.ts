@@ -39,16 +39,17 @@ const envSchema = z.object({
   // REFRESH_TOKEN_EXPIRES_IN: z.string().default('30d'),
   BCRYPT_ROUNDS: z.coerce.number().min(10).max(20).default(12),
   // ----------------------------------------------------------
-  /* CORS_ORIGIN: z
+  CORS_ORIGIN: z
     .string()
     .or(z.array(z.string()))
     .transform((val) => {
-      if (typeof val === 'string') {
-        return val.split(',').map((origin) => origin.trim())
+      if (typeof val === "string") {
+        return val.split(",").map((origin) => origin.trim());
       }
-      return val
+      return val;
     })
-    .default([]), */
+    .default([]),
+  // --------------------------------------------------------
   /* LOG_LEVEL: z
     .enum(['error', 'warn', 'info', 'debug', 'trace'])
     .default(isProduction ? 'info' : 'debug'), */
@@ -98,7 +99,7 @@ try {
 
 export const isProd = () => env.APP_STAGE === "production";
 export const isDev = () => env.APP_STAGE === "dev";
-export const isTest = () => env.APP_STAGE === "test";
+export const isTestEnv = () => env.APP_STAGE === "test";
 
 export { env };
 export default env;

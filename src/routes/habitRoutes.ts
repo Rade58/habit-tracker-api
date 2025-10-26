@@ -18,4 +18,8 @@ router.get("/:id/stats", (req, res) => {
   res.json({ message: `Get stats for habit ${req.params.id}` });
 });
 
+router.delete("/:id", (req, res) => {
+  res.status(204).json({ message: `Habit ${req.params.id} deleted` });
+});
+
 export default router;
