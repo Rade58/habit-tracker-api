@@ -15,12 +15,17 @@ const app = express();
 // ----------------------------------------
 
 app.use(helmet());
+// we would use this if we would allow only picked origins
+// to hit our api
 app.use(
   cors({
     origin: env.CORS_ORIGIN,
     credentials: true,
   })
 );
+// this opens everything (every domain is allowed to hit our api)
+// app.use(cors()); // bad for security (only use if this is public facing api)
+//
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
