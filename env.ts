@@ -5,19 +5,20 @@ process.env.APP_STAGE = process.env.APP_STAGE || "dev";
 
 const isDevelopment = process.env.APP_STAGE === "dev";
 const isTesting = process.env.APP_STAGE === "test";
-const isProduction = process.env.APP_STAGE === "production";
+// const isProduction = process.env.APP_STAGE === "production";
 
 // console.log(isDevelopment, isTesting, isProduction);
 
 if (isDevelopment) {
   // instead of this
-  loadEnv(); // this is loading .env
+  // loadEnv(); // this is loading .env
   // I wanted to use this
   loadEnv("dev"); // this is loading .env.dev
 } else if (isTesting) {
   loadEnv("test"); // this is loading .env.test
 } else {
-  console.log("not development and not testiong, it i probably production");
+  console.log("not development and not testiong, so it is probably production");
+  // no loading .env files in production
 }
 
 const envSchema = z.object({
@@ -30,12 +31,11 @@ const envSchema = z.object({
   DATABASE_URL: z.string().startsWith("postgresql://"),
   // DATABASE_POOL_MIN: z.coerce.number().min(0).default(2),
   // DATABASE_POOL_MAX: z.coerce.number().positive().default(isProduction ? 50:10),
-  JWT_SECRET: z.string().min(32, "Must be 32 char long at least"),
+  JWT_SECRET: z.string().min(32, "Must be 32 char long"),
   JWT_EXPIRES_IN: z.string().default("7d"),
   // REFRESH_TOKEN_SECRET: z.string().min(32).optional(),
   // REFRESH_TOKEN_EXPIRES_IN: z.string().default('30d'),
   BCRYPT_ROUNDS: z.coerce.number().min(10).max(20).default(12),
-  // ----------------------------------------------------------
   // ----------------------------------------------------------
   /* CORS_ORIGIN: z
     .string()
@@ -77,13 +77,15 @@ try {
   if (e instanceof z.ZodError) {
     console.log("Invalid env var");
 
-    console.log("____________________________________________");
-    console.error(JSON.stringify(z.treeifyError(e), null, 2));
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // console.error(JSON.stringify(e.flatten().fieldErrors, null, 2)); // deprecated
+    console.error(z.flattenError(e).fieldErrors);
 
     e.issues.forEach((err) => {
-      const path = err.path.join(".");
-      console.log("__________________________________________");
-      console.log(`${path}: ${err.message}`);
+      const path = err.path.join(". ");
+      console.log({ path });
+      console.log(`${path} -> ${err.message}`);
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     });
 
     process.exit(1);

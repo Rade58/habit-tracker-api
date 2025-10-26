@@ -11,6 +11,10 @@ app.get("/health", (req, res) => {
   });
 });
 
+app.get("/dugme", (req, res) => {
+  res.status(200).send(`<button>dugme</button>`);
+});
+
 // if we have analitics
 /* if (env.FEATURE_ANALYTICS) {
   app.use('/api/analytics', analyticsRoutes)
